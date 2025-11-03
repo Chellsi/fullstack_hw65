@@ -199,6 +199,47 @@ body {
   margin-bottom: 3rem;
 }
 
+/* Atlas Data Page */
+.alert {
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+  background-color: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  color: var(--danger-color);
+}
+
+.alert-error strong {
+  margin-right: 0.5rem;
+}
+
+.document-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.document {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.5rem;
+}
+
+.document summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.document pre {
+  margin-top: 0.75rem;
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  overflow: auto;
+}
+
 .page-title {
   font-size: 2.5rem;
   color: var(--dark-color);

@@ -10,12 +10,46 @@ import authRouter from './routes/auth.js';
 import themeRouter from './routes/theme.js';
 import { logRequests, optionalAuth, attachUserToLocals, authenticateToken } from './middlewares/index.js';
 import passport from './config/passport.js';
+import atlasRouter from './routes/atlas.js';
+import { connectToDatabase, closeDatabaseConnection } from './config/database.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = 3000;
+
+const mongoConfigDefined = process.env.MONGODB_URI && process.env.MONGODB_DB_NAME;
+
+if (mongoConfigDefined) {
+  connectToDatabase()
+    .then(() => {
+      console.log('Підключення до MongoDB Atlas встановлено.');
+    })
+    .catch((error) => {
+      console.error('Помилка під час підключення до MongoDB Atlas:', error);
+    });
+} else {
+  console.warn(
+    'Змінні оточення MONGODB_URI та MONGODB_DB_NAME не задані. Підключення до MongoDB Atlas пропущено.'
+  );
+}
+
+let server;
+
+const gracefulShutdown = async () => {
+  await closeDatabaseConnection();
+  if (server) {
+    server.close(() => {
+      process.exit(0);
+    });
+  } else {
+    process.exit(0);
+  }
+};
+
+process.on('SIGINT', gracefulShutdown);
+process.on('SIGTERM', gracefulShutdown);
 
 // Налаштування шаблонізаторів
 app.set('views', join(__dirname, 'views'));
@@ -78,6 +112,7 @@ app.use('/users', usersRouter);
 app.use('/articles', articlesRouter);
 app.use('/auth', authRouter);
 app.use('/api/theme', themeRouter);
+app.use('/atlas', atlasRouter);
 
 app.get('/protected', authenticateToken, (req, res) => {
   res.json({
@@ -105,7 +140,7 @@ app.use((err, req, res, next) => {
 });
 
 // Запуск сервера
-const server = app.listen(PORT, () => {
+server = app.listen(PORT, () => {
   console.log(`Сервер запущено на порту ${PORT}`);
 });
 

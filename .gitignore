@@ -31,6 +31,7 @@ build/
 # dotenv environment variables file
 .env
 .env.*
+!.env.example
 
 # OS generated files
 .DS_Store

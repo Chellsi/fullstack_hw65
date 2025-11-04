@@ -24,7 +24,8 @@
     "express-session": "file:vendor/express-session",
     "passport": "file:vendor/passport",
     "passport-local": "file:vendor/passport-local",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "mongodb": "^6.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",

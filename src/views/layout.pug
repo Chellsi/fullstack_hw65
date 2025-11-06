@@ -20,6 +20,7 @@ html(lang='uk')
           .nav-links
             a(href='/users/page') Користувачі
             a(href='/articles/page') Статті
+            a(href='/atlas/data') MongoDB Atlas
             - const authDisplayName = user && (user.username || user.name || user.email)
             if authDisplayName
               - const authInitial = authDisplayName.charAt(0).toUpperCase()

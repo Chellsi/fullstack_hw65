@@ -12,9 +12,12 @@ import { logRequests, optionalAuth, attachUserToLocals, authenticateToken } from
 import passport from './config/passport.js';
 import atlasRouter from './routes/atlas.js';
 import { connectToDatabase, closeDatabaseConnection } from './config/database.js';
+import { loadEnv } from './config/loadEnv.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+loadEnv({ path: join(__dirname, '..', '.env') });
 
 const app = express();
 const PORT = 3000;

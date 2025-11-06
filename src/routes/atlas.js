@@ -15,13 +15,28 @@ atlasRouter.get('/data', async (req, res, next) => {
   };
 
   try {
-    const { db } = await connectToDatabase();
-    const documents = await db
-      .collection(viewModel.collectionName)
+    const { client, db } = await connectToDatabase();
+    const configuredCollection = process.env.MONGODB_COLLECTION;
+    let targetDb = db;
+    let collectionName = viewModel.collectionName;
+
+    if (configuredCollection && configuredCollection.includes('.')) {
+      const [firstSegment, ...rest] = configuredCollection.split('.');
+      const derivedCollectionName = rest.join('.');
+
+      if (derivedCollectionName) {
+        targetDb = client.db(firstSegment);
+        collectionName = derivedCollectionName;
+      }
+    }
+
+    const documents = await targetDb
+      .collection(collectionName)
       .find({})
       .limit(25)
       .toArray();
 
+    viewModel.collectionName = configuredCollection || collectionName;
     viewModel.documents = documents;
     res.render('atlas/index', viewModel);
   } catch (error) {

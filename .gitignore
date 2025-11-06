@@ -29,7 +29,6 @@ build/
 .npm/
 
 # dotenv environment variables file
-.env
 .env.*
 !.env.example
 
@@ -46,3 +45,5 @@ vitest-report/
 
 # Misc
 *.tgz
+
+.cursorignore
